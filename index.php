@@ -143,7 +143,14 @@ if ($postcourses) {
             $infoleeloo = json_decode($output);
 
             if ($infoleeloo->status == 'true') {
-                $DB->execute("UPDATE {tool_leeloo_courses_sync} SET enabled = 0,productprice = '$courseprice',keytype = '$coursesynckeytype',keyprice = '$coursesynckeyprice' WHERE courseid = '$postcourseid'");
+                $DB->execute(
+                    "UPDATE {tool_leeloo_courses_sync} SET
+                        enabled = 0,
+                        productprice = '$courseprice',
+                        keytype = '$coursesynckeytype',
+                        keyprice = '$coursesynckeyprice'
+                    WHERE courseid = '$postcourseid'"
+                );
             }
         }
 
