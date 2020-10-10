@@ -260,7 +260,17 @@ if ($postcourses) {
 }
 
 $courses = $DB->get_records_sql(
-    'SELECT c.id,c.fullname,wd.enabled,wd.productprice,wd.keytype,wd.keyprice FROM {course} as c LEFT JOIN {tool_leeloo_courses_sync} as wd ON c.id = wd.courseid ORDER BY c.id ASC'
+    'SELECT
+        {course}.id,
+        {course}.fullname,
+        {tool_leeloo_courses_sync}.enabled,
+        {tool_leeloo_courses_sync}.productprice,
+        {tool_leeloo_courses_sync}.keytype,
+        {tool_leeloo_courses_sync}.keyprice
+    FROM {course}
+    LEFT JOIN {tool_leeloo_courses_sync}
+    ON {course}.id = {tool_leeloo_courses_sync}.courseid
+    ORDER BY {course}.id ASC'
 );
 
 echo $OUTPUT->header();
