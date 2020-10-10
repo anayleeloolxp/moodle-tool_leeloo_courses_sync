@@ -190,7 +190,12 @@ if ($postcourses) {
                 if ($infoleeloo->status == 'true') {
                     $productid = $infoleeloo->data->id;
                     $productalias = $infoleeloo->data->product_alias;
-                    $DB->execute("INSERT INTO {tool_leeloo_courses_sync} (courseid, productid, enabled, productprice,product_alias,keytype,keyprice)VALUES ('$postcourseid', '$productid', '1','$courseprice','$productalias','$coursesynckeytype','$coursesynckeyprice')");
+                    $DB->execute(
+                        "INSERT INTO {tool_leeloo_courses_sync}
+                            (courseid, productid, enabled, productprice,product_alias,keytype,keyprice)
+                        VALUES
+                            ('$postcourseid', '$productid', '1','$courseprice','$productalias','$coursesynckeytype','$coursesynckeyprice')"
+                    );
                 }
             } else {
 
@@ -233,14 +238,23 @@ if ($postcourses) {
                 }
                 $infoleeloo = json_decode($output);
                 if ($infoleeloo->status == 'true') {
-                    $DB->execute("UPDATE {tool_leeloo_courses_sync} SET enabled = 1,productprice = '$courseprice',keytype = '$coursesynckeytype',keyprice = '$coursesynckeyprice' WHERE courseid = '$postcourseid'");
+                    $DB->execute(
+                        "UPDATE {tool_leeloo_courses_sync} SET
+                            enabled = 1,
+                            productprice = '$courseprice',
+                            keytype = '$coursesynckeytype',
+                            keyprice = '$coursesynckeyprice'
+                        WHERE courseid = '$postcourseid'"
+                    );
                 }
             }
         }
     }
 }
 
-$courses = $DB->get_records_sql('SELECT c.id,c.fullname,wd.enabled,wd.productprice,wd.keytype,wd.keyprice FROM {course} as c LEFT JOIN {tool_leeloo_courses_sync} as wd ON c.id = wd.courseid ORDER BY c.id ASC');
+$courses = $DB->get_records_sql(
+    'SELECT c.id,c.fullname,wd.enabled,wd.productprice,wd.keytype,wd.keyprice FROM {course} as c LEFT JOIN {tool_leeloo_courses_sync} as wd ON c.id = wd.courseid ORDER BY c.id ASC'
+);
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading_with_help(get_string('leeloo_courses_sync', 'tool_leeloo_courses_sync'), 'leeloo_courses_sync', 'tool_leeloo_courses_sync');

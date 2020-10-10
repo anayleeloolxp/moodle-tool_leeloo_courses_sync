@@ -24,7 +24,7 @@
  */
 
 define('NO_OUTPUT_BUFFERING', true);
-require (__DIR__ . '/../../../config.php');
+require(__DIR__ . '/../../../config.php');
 $enrolled = 0;
 global $DB;
 
