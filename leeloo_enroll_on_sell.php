@@ -1,10 +1,43 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Enrol user on purchase.
+ *
+ * @package tool_leeloo_courses_sync
+ * @copyright  2020 Leeloo LXP (https://leeloolxp.com)
+ * @author     Leeloo LXP <info@leeloolxp.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 define('NO_OUTPUT_BUFFERING', true);
 require (__DIR__ . '/../../../config.php');
 $enrolled = 0;
 global $DB;
+
+/**
+ * Check if user is enrolled
+ *
+ * @param int $courseid The courseid
+ * @param int $userid The userid
+ * @param int $roleid The roleid
+ * @param int $enrolmethod The enrolmethod
+ * @return bool Return true
+ */
 function check_enrol($courseid, $userid, $roleid, $enrolmethod = 'manual') {
-    file_put_contents(dirname(__FILE__) . "/check_enrol.txt", print_r($courseid . ' ' . $userid, true));
     global $DB;
     $user = $DB->get_record('user', array('id' => $userid, 'deleted' => 0), '*', MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
@@ -38,21 +71,17 @@ if (isset($_REQUEST['product_id']) && isset($_REQUEST['username'])) {
     $productid = $_REQUEST['product_id'];
     $username = $_REQUEST['username'];
 
-    file_put_contents(dirname(__FILE__) . "/params.txt", print_r($username . '' . $productid, true));
+    $courseidarr = $DB->get_record_sql("SELECT courseid FROM {tool_leeloo_courses_sync} Where productid = '$productid'");
+    $courseid = $courseidarr->courseid;
 
-    $courseid_arr = $DB->get_record_sql("SELECT courseid FROM {tool_leeloo_courses_sync} Where productid = '$productid'");
-    $courseid = $courseid_arr->courseid;
-
-    $userid_arr = $DB->get_record_sql("SELECT id FROM {user} Where username = '$username'");
-    $userid = $userid_arr->id;
+    $useridarr = $DB->get_record_sql("SELECT id FROM {user} Where username = '$username'");
+    $userid = $useridarr->id;
 
     if ($courseid && $userid) {
-        file_put_contents(dirname(__FILE__) . "/if.txt", print_r($courseid . ' ' . $userid, true));
-
         if (check_enrol($courseid, $userid, 5, 'manual')) {
             $enrolled = 1;
         }
     }
 }
-file_put_contents(dirname(__FILE__) . "/enrolled.txt", print_r($enrolled, true));
+
 echo $enrolled;

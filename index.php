@@ -25,8 +25,8 @@
 
 define('NO_OUTPUT_BUFFERING', true);
 
-require (__DIR__ . '/../../../config.php');
-require_once ($CFG->libdir . '/adminlib.php');
+require(__DIR__ . '/../../../config.php');
+require_once($CFG->libdir . '/adminlib.php');
 
 require_login();
 admin_externalpage_setup('toolleeloo_courses_sync');
@@ -69,6 +69,12 @@ $leelooapibaseurl = 'https://leeloolxp.com/api/moodle_sell_course_plugin/';
 
 echo '<style>.sellcoursesynctable td,.sellcoursesynctable th {border: 1px solid;padding: 5px;}</style>';
 
+/**
+ * Encrypt Data
+ *
+ * @param string $texttoencrypt The texttoencrypt
+ * @return string Return encrypted string
+ */
 function encrption_data($texttoencrypt) {
 
     $encryptionmethod = "AES-256-CBC";
@@ -183,8 +189,8 @@ if ($postcourses) {
 
                 if ($infoleeloo->status == 'true') {
                     $productid = $infoleeloo->data->id;
-                    $product_alias = $infoleeloo->data->product_alias;
-                    $DB->execute("INSERT INTO {tool_leeloo_courses_sync} (courseid, productid, enabled, productprice,product_alias,keytype,keyprice)VALUES ('$postcourseid', '$productid', '1','$courseprice','$product_alias','$coursesynckeytype','$coursesynckeyprice')");
+                    $productalias = $infoleeloo->data->product_alias;
+                    $DB->execute("INSERT INTO {tool_leeloo_courses_sync} (courseid, productid, enabled, productprice,product_alias,keytype,keyprice)VALUES ('$postcourseid', '$productid', '1','$courseprice','$productalias','$coursesynckeytype','$coursesynckeyprice')");
                 }
             } else {
 
@@ -260,31 +266,31 @@ if (!empty($courses)) {
         $coursekeyprice = $course->keyprice;
         $coursekeytype = $course->keytype;
         if ($courseenabled == 1) {
-            $checkbox_checked = 'checked';
+            $checkboxchecked = 'checked';
             $pricestyle = '';
         } else {
-            $checkbox_checked = '';
+            $checkboxchecked = '';
             $pricestyle = '';
         }
         echo '<tr>';
-        echo "<td><input type='hidden' value='0' name='courses[$courseid]'><input $checkbox_checked id='course_$courseid' type='checkbox' name='courses[$courseid]' value='1'></td>";
+        echo "<td><input type='hidden' value='0' name='courses[$courseid]'><input $checkboxchecked id='course_$courseid' type='checkbox' name='courses[$courseid]' value='1'></td>";
         echo "<td><label for='course_$courseid'>$coursefullname</label></td>";
         echo "<td><input type='number' value='$courseproductprice' name='price[$courseid]' id='price_$courseid' $pricestyle></td>";
 
-        $keys_select = "<select name='keytype[$courseid]'><option value='-1'>No</option>";
+        $keysselect = "<select name='keytype[$courseid]'><option value='-1'>No</option>";
         if ($keysresponse->status == 'true') {
             foreach ($keysresponse->data->keys as $keytype) {
                 if ($coursekeytype == $keytype->id) {
-                    $selected_keytype = 'selected';
+                    $selectedkeytype = 'selected';
                 } else {
-                    $selected_keytype = '';
+                    $selectedkeytype = '';
                 }
-                $keys_select .= "<option $selected_keytype value='$keytype->id'>$keytype->name</option>";
+                $keysselect .= "<option $selectedkeytype value='$keytype->id'>$keytype->name</option>";
             }
         }
-        $keys_select .= "</select>";
+        $keysselect .= "</select>";
 
-        echo "<td>$keys_select</td>";
+        echo "<td>$keysselect</td>";
 
         echo "<td><input type='number' value='$coursekeyprice' name='keyprice[$courseid]' id='price_$courseid' $pricestyle></td>";
         echo '</tr>';
