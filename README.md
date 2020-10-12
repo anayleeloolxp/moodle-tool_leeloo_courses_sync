@@ -1,2 +1,2 @@
 # Leeloo LXP Course to Product Synchronizer 
-This tool is used to Sell Courses on Leeloo.
+This tool is used to Sell Courses on Leeloo, admin can selet a course and can set price to it. This makes the course a prodcut in Leeloo LXp ,and when the user tries to view it, he is asked to make payment to view it, Once payment is done he is enrolled in the course and can access it
