@@ -50,7 +50,7 @@ $curl = new curl;
 $options = array(
     'CURLOPT_RETURNTRANSFER' => true,
     'CURLOPT_HEADER' => false,
-    'CURLOPT_POST' => count($postdata),
+    'CURLOPT_POST' => 1,
 );
 
 if (!$output = $curl->post($url, $postdata, $options)) {
@@ -67,8 +67,6 @@ if ($infoleeloolxp->status != 'false') {
 
 $leelooapibaseurl = 'https://leeloolxp.com/api/moodle_sell_course_plugin/';
 
-echo '<style>.sellcoursesynctable td,.sellcoursesynctable th {border: 1px solid;padding: 5px;}</style>';
-
 /**
  * Encrypt Data
  *
@@ -79,7 +77,7 @@ function encrption_data($texttoencrypt) {
 
     $encryptionmethod = "AES-256-CBC";
     $secrethash = "25c6c7ff35b9979b151f2136cd13b0ff";
-    return openssl_encrypt($texttoencrypt, $encryptionmethod, $secrethash);
+    return @openssl_encrypt($texttoencrypt, $encryptionmethod, $secrethash);
 }
 
 $post = [
@@ -278,6 +276,8 @@ echo $OUTPUT->heading_with_help(get_string('leeloo_courses_sync', 'tool_leeloo_c
 if (!empty($error)) {
     echo $OUTPUT->container($error, 'leeloo_courses_sync_myformerror');
 }
+
+echo '<style>.sellcoursesynctable td,.sellcoursesynctable th {border: 1px solid;padding: 5px;}</style>';
 
 if (!empty($courses)) {
     echo '<form method="post">
