@@ -277,7 +277,7 @@ if (!empty($error)) {
     echo $OUTPUT->container($error, 'leeloo_courses_sync_myformerror');
 }
 
-echo '<style>.sellcoursesynctable td,.sellcoursesynctable th {border: 1px solid;padding: 5px;}</style>';
+echo '<style>.sellcoursesynctable td,.sellcoursesynctable th {padding: 5px;}.sellcoursesynctable input, .sellcoursesynctable select {border: 1px solid #ced4da;padding: .375rem .75rem;height: calc(1.5em + .75rem + 2px);font-size: .9375rem;color: #495057;}.sellcoursesynctable label{margin-bottom: 0;}</style>';
 
 if (!empty($courses)) {
     echo '<form method="post">
@@ -326,7 +326,7 @@ if (!empty($courses)) {
         echo "<td><input type='number' value='$coursekeyprice' name='keyprice[$courseid]' id='price_$courseid' $pricestyle></td>";
         echo '</tr>';
     }
-    echo '</table><button type="submit" value="Save and Create Departments">Submit</button></form>';
+    echo '<tr><td colspan="5" style="text-align: center;"><button style="padding: 10px 20px;color: #222222;background: #eeeeee;border: 1px solid #cccccc;border-radius: 5px;"type="submit" value="Save and Create Departments">Submit</button></td></tr></table></form>';
 }
 
 echo $OUTPUT->footer();
