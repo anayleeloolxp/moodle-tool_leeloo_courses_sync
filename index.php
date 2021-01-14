@@ -281,7 +281,7 @@ echo '<style>.sellcoursesynctable td,.sellcoursesynctable th {padding: 5px;}.sel
 
 if (!empty($courses)) {
     echo '<form method="post">
-    <table class="sellcoursesynctable">
+    <table class="sellcoursesynctable" style="width: 100%;">
     <thead>
         <th>&nbsp;</th>
         <th>Course</th>
