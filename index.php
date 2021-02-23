@@ -51,7 +51,7 @@ $curl = new curl;
 $options = array(
     'CURLOPT_RETURNTRANSFER' => true,
     'CURLOPT_HEADER' => false,
-    'CURLOPT_POST' => 1,
+    'CURLOPT_POST' => count($postdata),
 );
 
 if (!$output = $curl->post($url, $postdata, $options)) {
@@ -92,7 +92,8 @@ $postdata = [
 $curl = new curl;
 $options = array(
     'CURLOPT_RETURNTRANSFER' => true,
-    'CURLOPT_POSTFIELDS' => $post,
+    'CURLOPT_HEADER' => false,
+    'CURLOPT_POST' => count($postdata),
 );
 
 if (!$output = $curl->post($url, $postdata, $options)) {
@@ -136,6 +137,8 @@ if (!empty($postcourses)) {
             $curl = new curl;
             $options = array(
                 'CURLOPT_RETURNTRANSFER' => true,
+                'CURLOPT_HEADER' => false,
+                'CURLOPT_POST' => count($post),
             );
 
             if (!$output = $curl->post($url, $post, $options)) {
@@ -188,6 +191,8 @@ if (!empty($postcourses)) {
                 $curl = new curl;
                 $options = array(
                     'CURLOPT_RETURNTRANSFER' => true,
+                    'CURLOPT_HEADER' => false,
+                    'CURLOPT_POST' => count($post),
                 );
 
                 if (!$output = $curl->post($url, $post, $options)) {
@@ -239,6 +244,8 @@ if (!empty($postcourses)) {
                 $curl = new curl;
                 $options = array(
                     'CURLOPT_RETURNTRANSFER' => true,
+                    'CURLOPT_HEADER' => false,
+                    'CURLOPT_POST' => count($post),
                 );
 
                 if (!$output = $curl->post($url, $post, $options)) {
