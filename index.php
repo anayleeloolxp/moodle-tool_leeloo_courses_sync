@@ -329,7 +329,9 @@ if (!empty($courses)) {
         echo "<td><input type='number' value='$coursekeyprice' name='keyprice[$courseid]' id='price_$courseid' $pricestyle></td>";
         echo '</tr>';
     }
-    echo '<tr><td colspan="5" style="text-align: center;"><button style="padding: 10px 20px;color: #222222;background: #eeeeee;border: 1px solid #cccccc;border-radius: 5px;"type="submit" value="Save and Create Departments">Submit</button></td></tr></table></form>';
+    $btnstyle = 'padding: 10px 20px;color: #222222;background: #eeeeee;border: 1px solid #cccccc;border-radius: 5px;';
+    $buttonsubmit = '<button style="'.$btnstyle.'"type="submit" value="Save and Create Departments">Submit</button>';
+    echo '<tr><td colspan="5" style="text-align: center;">'.$buttonsubmit.'</td></tr></table></form>';
 }
 
 echo $OUTPUT->footer();
