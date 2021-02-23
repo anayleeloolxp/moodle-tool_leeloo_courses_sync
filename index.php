@@ -33,18 +33,19 @@ admin_externalpage_setup('toolleeloo_courses_sync');
 
 global $SESSION;
 
-$postcourses = optional_param('courses', null, PARAM_RAW);
-$postprices = optional_param('price', null, PARAM_RAW);
-$postkeytypes = optional_param('keytype', null, PARAM_RAW);
-$postkeyprices = optional_param('keyprice', null, PARAM_RAW);
+$postcourses = optional_param_array('courses', array(), PARAM_RAW);
+$postprices = optional_param_array('price', array(), PARAM_RAW);
+$postkeytypes = optional_param_array('keytype', array(), PARAM_RAW);
+$postkeyprices = optional_param_array('keyprice', array(), PARAM_RAW);
 
 $vendorkey = get_config('tool_leeloo_courses_sync', 'vendorkey');
 
 $leeloolxplicense = get_config('tool_leeloo_courses_sync')->license;
 
 $url = 'https://leeloolxp.com/api_moodle.php/?action=page_info';
-$postdata = '&license_key=' . $leeloolxplicense;
-
+$postdata = [
+    'license_key' => $leeloolxplicense,
+];
 $curl = new curl;
 
 $options = array(
@@ -85,7 +86,9 @@ $post = [
 ];
 
 $url = $leelooapibaseurl . 'get_keytypes_by_licensekey.php';
-$postdata = '&license_key=' . encrption_data($vendorkey);
+$postdata = [
+    'license_key' => encrption_data($vendorkey),
+];
 $curl = new curl;
 $options = array(
     'CURLOPT_RETURNTRANSFER' => true,
@@ -97,12 +100,12 @@ if (!$output = $curl->post($url, $postdata, $options)) {
 }
 $keysresponse = json_decode($output);
 
-if ($postcourses) {
+if (!empty($postcourses)) {
     foreach ($postcourses as $postcourseid => $postcourse) {
         if ($postcourse == 0) {
             $leeloodept = $DB->get_record_sql('SELECT productid FROM {tool_leeloo_courses_sync} WHERE courseid = ' . $postcourseid . '');
 
-            $productid = $leeloodept->productid;
+            // $productid = $leeloodept->productid;
             $course = $DB->get_record_sql('SELECT fullname,summary FROM {course} where id = ' . $postcourseid);
 
             $courseprice = $postprices[$postcourseid];
@@ -119,7 +122,7 @@ if ($postcourses) {
             $post = [
                 'license_key' => encrption_data($vendorkey),
                 'action' => encrption_data('update'),
-                'productid' => encrption_data($productid),
+                'productid' => encrption_data('0'),
                 'status' => encrption_data('0'),
                 'coursename' => encrption_data($course->fullname),
                 'coursesummary' => encrption_data($course->summary),

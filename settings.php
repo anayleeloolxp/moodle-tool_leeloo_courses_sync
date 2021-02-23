@@ -26,7 +26,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
-
     $settings = new admin_settingpage('tool_leeloo_courses_sync', get_string('pluginname', 'tool_leeloo_courses_sync'));
 
     $settings->add(new admin_setting_configtext(
