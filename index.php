@@ -279,8 +279,10 @@ echo $OUTPUT->heading_with_help(get_string('leeloo_courses_sync', 'tool_leeloo_c
 if (!empty($error)) {
     echo $OUTPUT->container($error, 'leeloo_courses_sync_myformerror');
 }
-
-echo '<style>.sellcoursesynctable td,.sellcoursesynctable th {padding: 5px;}.sellcoursesynctable input, .sellcoursesynctable select {border: 1px solid #ced4da;padding: .375rem .75rem;height: calc(1.5em + .75rem + 2px);font-size: .9375rem;color: #495057;}.sellcoursesynctable label{margin-bottom: 0;}</style>';
+$thstyle = '.sellcoursesynctable td,.sellcoursesynctable th {padding: 5px;}';
+$instyle = 'border: 1px solid #ced4da;padding: .375rem .75rem;height: calc(1.5em + .75rem + 2px);font-size: .9375rem;color: #495057;';
+$selinput = '.sellcoursesynctable input, .sellcoursesynctable select {'.$instyle.'}';
+echo '<style>'.$thstyle.$selinput.'.sellcoursesynctable label{margin-bottom: 0;}</style>';
 
 if (!empty($courses)) {
     echo '<form method="post">
