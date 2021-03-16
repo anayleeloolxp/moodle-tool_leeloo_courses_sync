@@ -55,7 +55,9 @@ $options = array(
 );
 
 if (!$output = $curl->post($url, $postdata, $options)) {
-    $error = get_string('nolicense', 'tool_leeloo_courses_sync');
+    $urltogo = $CFG->wwwroot . '/admin/search.php';
+    redirect($urltogo, get_string('nolicense', 'tool_leeloo_courses_sync'), 1);
+    return true;
 }
 
 $infoleeloolxp = json_decode($output);
@@ -63,7 +65,9 @@ $infoleeloolxp = json_decode($output);
 if ($infoleeloolxp->status != 'false') {
     $leeloolxpurl = $infoleeloolxp->data->install_url;
 } else {
-    $error = get_string('nolicense', 'block_leeloo_prodcuts');
+    $urltogo = $CFG->wwwroot . '/admin/search.php';
+    redirect($urltogo, get_string('nolicense', 'tool_leeloo_courses_sync'), 1);
+    return true;
 }
 
 $leelooapibaseurl = 'https://leeloolxp.com/api/moodle_sell_course_plugin/';
