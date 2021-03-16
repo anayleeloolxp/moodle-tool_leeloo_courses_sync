@@ -104,10 +104,10 @@ $keysresponse = json_decode($output);
 if (!empty($postcourses)) {
     foreach ($postcourses as $postcourseid => $postcourse) {
         if ($postcourse == 0) {
-            $leeloodept = $DB->get_record_sql('SELECT productid FROM {tool_leeloo_courses_sync} WHERE courseid = ' . $postcourseid . '');
+            $leeloodept = $DB->get_record_sql('SELECT productid FROM {tool_leeloo_courses_sync} WHERE courseid = ?', [$postcourseid]);
 
             // $productid = $leeloodept->productid;
-            $course = $DB->get_record_sql('SELECT fullname,summary FROM {course} where id = ' . $postcourseid);
+            $course = $DB->get_record_sql('SELECT fullname,summary FROM {course} where id = ?', [$postcourseid]);
 
             $courseprice = $postprices[$postcourseid];
             $coursesynckeyprice = $postkeyprices[$postcourseid];
@@ -149,20 +149,21 @@ if (!empty($postcourses)) {
             if ($infoleeloo->status == 'true') {
                 $DB->execute(
                     "UPDATE {tool_leeloo_courses_sync} SET
-                        enabled = 0,
-                        productprice = '$courseprice',
-                        keytype = '$coursesynckeytype',
-                        keyprice = '$coursesynckeyprice'
-                    WHERE courseid = '$postcourseid'"
+                        enabled = ?,
+                        productprice = ?,
+                        keytype = ?,
+                        keyprice = ?
+                    WHERE courseid = ?",
+                    [0, $courseprice, $coursesynckeytype, $coursesynckeyprice, $postcourseid]
                 );
             }
         }
 
         if ($postcourse == 1) {
-            $leeloocourse = $DB->get_record_sql('SELECT COUNT(*) as countcourse FROM {tool_leeloo_courses_sync} WHERE courseid = ' . $postcourseid . '');
+            $leeloocourse = $DB->get_record_sql('SELECT COUNT(*) as countcourse FROM {tool_leeloo_courses_sync} WHERE courseid = ?', [$postcourseid]);
 
             if ($leeloocourse->countcourse == 0) {
-                $course = $DB->get_record_sql('SELECT fullname,summary FROM {course} where id = ' . $postcourseid);
+                $course = $DB->get_record_sql('SELECT fullname,summary FROM {course} where id = ?', [$postcourseid]);
 
                 $courseprice = $postprices[$postcourseid];
                 $coursesynckeyprice = $postkeyprices[$postcourseid];
@@ -207,15 +208,16 @@ if (!empty($postcourses)) {
                         "INSERT INTO {tool_leeloo_courses_sync}
                             (courseid, productid, enabled, productprice,product_alias,keytype,keyprice)
                         VALUES
-                            ('$postcourseid', '$productid', '1','$courseprice','$productalias','$coursesynckeytype','$coursesynckeyprice')"
+                            (?, ?, ?, ?, ?, ?, ?)",
+                        [$postcourseid, $productid, 1, $courseprice, $productalias, $coursesynckeytype, $coursesynckeyprice]    
                     );
                 }
             } else {
 
-                $leeloodept = $DB->get_record_sql('SELECT productid FROM {tool_leeloo_courses_sync} WHERE courseid = ' . $postcourseid . '');
+                $leeloodept = $DB->get_record_sql('SELECT productid FROM {tool_leeloo_courses_sync} WHERE courseid = ?', [$postcourseid]);
 
                 $productid = $leeloodept->productid;
-                $course = $DB->get_record_sql('SELECT fullname,summary FROM {course} where id = ' . $postcourseid);
+                $course = $DB->get_record_sql('SELECT fullname,summary FROM {course} where id = ?', [$postcourseid]);
 
                 $courseprice = $postprices[$postcourseid];
                 $coursesynckeyprice = $postkeyprices[$postcourseid];
@@ -255,11 +257,12 @@ if (!empty($postcourses)) {
                 if ($infoleeloo->status == 'true') {
                     $DB->execute(
                         "UPDATE {tool_leeloo_courses_sync} SET
-                            enabled = 1,
-                            productprice = '$courseprice',
-                            keytype = '$coursesynckeytype',
-                            keyprice = '$coursesynckeyprice'
-                        WHERE courseid = '$postcourseid'"
+                            enabled = ?,
+                            productprice = ?,
+                            keytype = ?,
+                            keyprice = ?
+                        WHERE courseid = ?",
+                        [1, $courseprice, $coursesynckeytype, $coursesynckeyprice, $postcourseid]
                     );
                 }
             }

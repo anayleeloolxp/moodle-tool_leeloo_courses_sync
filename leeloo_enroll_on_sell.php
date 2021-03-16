@@ -74,10 +74,10 @@ if (isset($reqproductid) && isset($requsername)) {
     $productid = $reqproductid;
     $username = $requsername;
 
-    $courseidarr = $DB->get_record_sql("SELECT courseid FROM {tool_leeloo_courses_sync} Where productid = '$productid'");
+    $courseidarr = $DB->get_record_sql("SELECT courseid FROM {tool_leeloo_courses_sync} Where productid = ?", [$productid]);
     $courseid = $courseidarr->courseid;
 
-    $useridarr = $DB->get_record_sql("SELECT id FROM {user} Where username = '$username'");
+    $useridarr = $DB->get_record_sql("SELECT id FROM {user} Where username = ?", [$username]);
     $userid = $useridarr->id;
 
     if ($courseid && $userid) {
