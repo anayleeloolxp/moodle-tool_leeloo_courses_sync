@@ -67,9 +67,12 @@ function check_enrol($courseid, $userid, $roleid, $enrolmethod = 'manual') {
     return true;
 }
 
-if (isset($_REQUEST['product_id']) && isset($_REQUEST['username'])) {
-    $productid = $_REQUEST['product_id'];
-    $username = $_REQUEST['username'];
+$reqproductid = optional_param('product_id', 0, PARAM_RAW);
+$requsername = optional_param('username', 0, PARAM_RAW);
+
+if (isset($reqproductid) && isset($requsername)) {
+    $productid = $reqproductid;
+    $username = $requsername;
 
     $courseidarr = $DB->get_record_sql("SELECT courseid FROM {tool_leeloo_courses_sync} Where productid = '$productid'");
     $courseid = $courseidarr->courseid;
