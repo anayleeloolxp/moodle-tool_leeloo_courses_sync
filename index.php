@@ -299,10 +299,10 @@ if (!empty($courses)) {
     <table class="sellcoursesynctable" style="width: 100%;">
     <thead>
         <th>&nbsp;</th>
-        <th>Course</th>
-        <th>Price($)</th>
-        <th>Key Allowed</th>
-        <th>Key Price</th>
+        <th>'.get_string('course', 'tool_leeloo_courses_sync').'</th>
+        <th>'.get_string('price', 'tool_leeloo_courses_sync').'</th>
+        <th>'.get_string('keyallow', 'tool_leeloo_courses_sync').'</th>
+        <th>'.get_string('keyprice', 'tool_leeloo_courses_sync').'</th>
     </thead>';
     foreach ($courses as $course) {
         $courseid = $course->id;
@@ -323,7 +323,7 @@ if (!empty($courses)) {
         echo "<td><label for='course_$courseid'>$coursefullname</label></td>";
         echo "<td><input type='number' value='$courseproductprice' name='price[$courseid]' id='price_$courseid' $pricestyle></td>";
 
-        $keysselect = "<select name='keytype[$courseid]'><option value='-1'>No</option>";
+        $keysselect = "<select name='keytype[$courseid]'><option value='-1'>".get_string('no', 'tool_leeloo_courses_sync')."</option>";
         if ($keysresponse->status == 'true') {
             foreach ($keysresponse->data->keys as $keytype) {
                 if ($coursekeytype == $keytype->id) {
@@ -342,7 +342,7 @@ if (!empty($courses)) {
         echo '</tr>';
     }
     $btnstyle = 'padding: 10px 20px;color: #222222;background: #eeeeee;border: 1px solid #cccccc;border-radius: 5px;';
-    $buttonsubmit = '<button style="'.$btnstyle.'"type="submit" value="Save and Create Departments">Submit</button>';
+    $buttonsubmit = '<button style="'.$btnstyle.'"type="submit" value="Save and Create Departments">'.get_string('submit', 'tool_leeloo_courses_sync').'</button>';
     echo '<tr><td colspan="5" style="text-align: center;">'.$buttonsubmit.'</td></tr></table></form>';
 }
 
