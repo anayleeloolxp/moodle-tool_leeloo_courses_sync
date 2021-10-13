@@ -62,7 +62,11 @@ function check_enrol($courseid, $userid, $roleid, $enrolmethod = 'manual') {
             }
             $manualinstance = $DB->get_record('enrol', array('id' => $instanceid));
         }
-        $enrol->enrol_user($manualinstance, $userid, $roleid);
+        //$enrol->enrol_user($manualinstance, $userid, $roleid);
+        $DB->execute( 
+            "INSERT INTO {user_enrolments} (status, enrolid, userid) VALUES (?, ?, ?)",
+            [0, $manualinstance->id, $userid]
+        );
     }
     return true;
 }
