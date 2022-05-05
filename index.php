@@ -166,7 +166,7 @@ if (!empty($postcourses)) {
         }
 
         if ($postcourse == 1) {
-            $leeloocourse = $DB->get_record_sql('SELECT COUNT(*) as countcourse FROM {tool_leeloo_courses_sync} WHERE courseid = ?', [$postcourseid]);
+            $leeloocourse = $DB->get_record_sql('SELECT COUNT(*) countcourse FROM {tool_leeloo_courses_sync} WHERE courseid = ?', [$postcourseid]);
 
             if ($leeloocourse->countcourse == 0) {
                 $course = $DB->get_record_sql('SELECT fullname,summary FROM {course} where id = ?', [$postcourseid]);
