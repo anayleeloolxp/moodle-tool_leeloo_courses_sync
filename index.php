@@ -110,10 +110,15 @@ $keysresponse = json_decode($output);
 if (!empty($postcourses)) {
     foreach ($postcourses as $postcourseid => $postcourse) {
         if ($postcourse == 0) {
-            $leeloodept = $DB->get_record_sql("SELECT productid FROM {tool_leeloo_courses_sync} WHERE courseid = ?", [$postcourseid]);
+            $leeloodept = $DB->get_record_sql(
+                "SELECT productid FROM {tool_leeloo_courses_sync} WHERE courseid = ?",
+                [$postcourseid]
+            );
 
-            // $productid = $leeloodept->productid;
-            $course = $DB->get_record_sql("SELECT fullname,summary FROM {course} where id = ?", [$postcourseid]);
+            $course = $DB->get_record_sql(
+                "SELECT fullname,summary FROM {course} where id = ?",
+                [$postcourseid]
+            );
 
             $courseprice = $postprices[$postcourseid];
             $coursesynckeyprice = $postkeyprices[$postcourseid];
@@ -166,10 +171,16 @@ if (!empty($postcourses)) {
         }
 
         if ($postcourse == 1) {
-            $leeloocourse = $DB->get_record_sql("SELECT COUNT(*) countcourse FROM {tool_leeloo_courses_sync} WHERE courseid = ?", [$postcourseid]);
+            $leeloocourse = $DB->get_record_sql(
+                "SELECT COUNT(*) countcourse FROM {tool_leeloo_courses_sync} WHERE courseid = ?",
+                [$postcourseid]
+            );
 
             if ($leeloocourse->countcourse == 0) {
-                $course = $DB->get_record_sql("SELECT fullname,summary FROM {course} where id = ?", [$postcourseid]);
+                $course = $DB->get_record_sql(
+                    "SELECT fullname,summary FROM {course} where id = ?",
+                    [$postcourseid]
+                );
 
                 $courseprice = $postprices[$postcourseid];
                 $coursesynckeyprice = $postkeyprices[$postcourseid];
@@ -220,7 +231,10 @@ if (!empty($postcourses)) {
                 }
             } else {
 
-                $leeloodept = $DB->get_record_sql("SELECT productid FROM {tool_leeloo_courses_sync} WHERE courseid = ?", [$postcourseid]);
+                $leeloodept = $DB->get_record_sql(
+                    "SELECT productid FROM {tool_leeloo_courses_sync} WHERE courseid = ?",
+                    [$postcourseid]
+                );
 
                 $productid = $leeloodept->productid;
                 $course = $DB->get_record_sql("SELECT fullname,summary FROM {course} where id = ?", [$postcourseid]);
@@ -291,12 +305,23 @@ $courses = $DB->get_records_sql(
 );
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading_with_help(get_string('leeloo_courses_sync', 'tool_leeloo_courses_sync'), 'leeloo_courses_sync', 'tool_leeloo_courses_sync');
+echo $OUTPUT->heading_with_help(
+    get_string('leeloo_courses_sync', 'tool_leeloo_courses_sync'),
+    'leeloo_courses_sync',
+    'tool_leeloo_courses_sync'
+);
+
 if (!empty($error)) {
     echo $OUTPUT->container($error, 'leeloo_courses_sync_myformerror');
 }
 $thstyle = '.sellcoursesynctable td,.sellcoursesynctable th {padding: 5px;}';
-$instyle = 'border: 1px solid #ced4da;padding: .375rem .75rem;height: calc(1.5em + .75rem + 2px);font-size: .9375rem;color: #495057;';
+
+$instyle = 'border: 1px solid #ced4da;
+padding: .375rem .75rem;
+height: calc(1.5em + .75rem + 2px);
+font-size: .9375rem;
+color: #495057;';
+
 $selinput = '.sellcoursesynctable input, .sellcoursesynctable select {' . $instyle . '}';
 echo '<style>' . $thstyle . $selinput . '.sellcoursesynctable label{margin-bottom: 0;}</style>';
 
@@ -325,11 +350,17 @@ if (!empty($courses)) {
             $pricestyle = '';
         }
         echo '<tr>';
-        echo "<td><input type='hidden' value='0' name='courses[$courseid]'><input $checkboxchecked id='course_$courseid' type='checkbox' name='courses[$courseid]' value='1'></td>";
+
+        echo "<td><input type='hidden' value='0' name='courses[$courseid]'>" .
+            "<input $checkboxchecked id='course_$courseid' type='checkbox' name='courses[$courseid]' value='1'></td>";
+
         echo "<td><label for='course_$courseid'>$coursefullname</label></td>";
         echo "<td><input type='number' value='$courseproductprice' name='price[$courseid]' id='price_$courseid' $pricestyle></td>";
 
-        $keysselect = "<select name='keytype[$courseid]'><option value='-1'>" . get_string('no', 'tool_leeloo_courses_sync') . "</option>";
+        $keysselect = "<select name='keytype[$courseid]'><option value='-1'>" .
+            get_string('no', 'tool_leeloo_courses_sync') .
+            "</option>";
+
         if ($keysresponse->status == 'true') {
             foreach ($keysresponse->data->keys as $keytype) {
                 if ($coursekeytype == $keytype->id) {
@@ -347,8 +378,15 @@ if (!empty($courses)) {
         echo "<td><input type='number' value='$coursekeyprice' name='keyprice[$courseid]' id='price_$courseid' $pricestyle></td>";
         echo '</tr>';
     }
+
     $btnstyle = 'padding: 10px 20px;color: #222222;background: #eeeeee;border: 1px solid #cccccc;border-radius: 5px;';
-    $buttonsubmit = '<button style="' . $btnstyle . '"type="submit" value="Save and Create Departments">' . get_string('submit', 'tool_leeloo_courses_sync') . '</button>';
+
+    $buttonsubmit = '<button style="' .
+        $btnstyle .
+        '"type="submit" value="Save and Create Departments">' .
+        get_string('submit', 'tool_leeloo_courses_sync') .
+        '</button>';
+
     echo '<tr><td colspan="5" style="text-align: center;">' . $buttonsubmit . '</td></tr></table></form>';
 }
 

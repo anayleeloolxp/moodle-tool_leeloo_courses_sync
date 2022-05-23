@@ -25,6 +25,11 @@
 
 define('NO_OUTPUT_BUFFERING', true);
 require(__DIR__ . '/../../../config.php');
+
+require_login();
+
+global $USER;
+
 $enrolled = 0;
 global $DB;
 
@@ -39,10 +44,10 @@ global $DB;
  */
 function check_enrol($courseid, $userid, $roleid, $enrolmethod = 'manual') {
     global $DB;
-    $user = $DB->get_record('user', array('id' => $userid, 'deleted' => 0), '*', MUST_EXIST);
+    $dbuser = $DB->get_record('user', array('id' => $userid, 'deleted' => 0), '*', MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
     $context = context_course::instance($course->id);
-    if (!is_enrolled($context, $user)) {
+    if (!is_enrolled($context, $dbuser)) {
         $enrol = enrol_get_plugin($enrolmethod);
         if ($enrol === null) {
             return false;
@@ -62,7 +67,7 @@ function check_enrol($courseid, $userid, $roleid, $enrolmethod = 'manual') {
             }
             $manualinstance = $DB->get_record('enrol', array('id' => $instanceid));
         }
-        //$enrol->enrol_user($manualinstance, $userid, $roleid);
+
         $DB->execute(
             "INSERT INTO {user_enrolments} (status, enrolid, userid) VALUES (?, ?, ?)",
             [0, $manualinstance->id, $userid]
@@ -83,6 +88,8 @@ if (isset($reqproductid) && isset($requsername)) {
 
     $useridarr = $DB->get_record_sql("SELECT id FROM {user} Where username = ?", [$username]);
     $userid = $useridarr->id;
+
+    $userid = $USER->id;
 
     if ($courseid && $userid) {
         if (check_enrol($courseid, $userid, 5, 'manual')) {
